@@ -1,0 +1,3 @@
+#/bin/bash
+source /afs/ihep.ac.cn/users/c/chenlj/chenlj/build_env.sh
+python ../decode/process_chip_a9.py
