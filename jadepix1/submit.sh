@@ -39,6 +39,12 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.5.5"    "Run convert electric field from TCAD using user tools[efgen]" 
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.6"      "[MoReWeb]"
+    printf "\n"  
+    printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 A1]"
+    printf "\n\t%-9s  %-40s"  "0.7.1"    "Create A1 python scripts"
+    printf "\n\t%-9s  %-40s"  "0.7.2"    "Create A1 jobs"
+    printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs"
+    printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine A1 root files"
   }
 
 
@@ -161,7 +167,32 @@ case $option in
 
 
     0.6) echo "MoReWeb..."
-         ;;
+        ;;
+
+
+    # --------------------------------------------------------------------------
+    #  0.7 Analyze JadePix1 A1
+    # --------------------------------------------------------------------------
+
+    0.7) echo "Analyze JadePix1..."
+        ;;
+
+    0.7.1) echo "Create A1 python scripts"
+        python ./python/src/script_a1_generator.py
+        ;;
+
+    0.7.2) echo "Create A1 jobs"
+        python ./python/src/job_a1_generator.py
+        ;;
+    
+    0.7.3) echo "Run A1 jobs"
+        chmod u+x ./python/run/jobs_chip_a1/*
+        chmod u+x run_jobs_chip_a1
+        ./python/run/run_jobs_chip_a1.sh
+        ;;
+
+    0.7.4) echo "Combine A1 root files"
+        ;;
 
 
 esac
