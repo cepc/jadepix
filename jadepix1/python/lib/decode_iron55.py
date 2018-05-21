@@ -99,13 +99,13 @@ class Decode():
                 tmp_adc = self.get_int16_abs(tmp_adc)
                 tmp_frame[row,channel] = tmp_adc
 
-                #find seed#
-                tmp_seed_adc = np.max(tmp_frame)
-                tmp_seed_position = np.where(tmp_frame == tmp_seed_adc)
+        #find seed#
+        tmp_seed_adc = np.max(tmp_frame)
+        tmp_seed_position = np.where(tmp_frame == tmp_seed_adc)
 
-                row_seed = tmp_seed_position[0][0]
-                channel_seed = tmp_seed_position[1][0]
-                #seed end#
+        row_seed = tmp_seed_position[0][0]
+        channel_seed = tmp_seed_position[1][0]
+        #seed end#
 
                 # print(tmp_frame)
                 # print('SEED ADC : ',tmp_seed_adc)
