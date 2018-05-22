@@ -51,12 +51,38 @@ if __name__ == '__main__':
         print('No chip address specified!')  
         sys.exit() 
 
-    if sys.argv[1].startswith('-'):
-        chip_address = sys.argv[1][1:]
-        print('Set chip address to %s'%chip_address.upper())
+    if len(sys.argv) == 2:
+        if sys.argv[1].startswith('-a'):
+            chip_address = sys.argv[1][1:]
+            print('Set chip address to %s'%chip_address.upper())
 
-    else:
-        print('Chip address is invalid!')
-        sys.exit()   
-    for input_dir in source_data_dir[chip_address.lower()]:  
-        run(chip_address,input_dir)
+            for input_dir in source_data_dir[chip_address.lower()]:  
+                run(chip_address,input_dir)
+
+        else:
+            print('Chip address is invalid!')
+            sys.exit()   
+            
+    if len(sys.argv) == 3:
+        if (sys.argv[1].startswith('-a') and sys.argv[2].startswith('-a')):
+            chip_address_start = sys.argv[1][1:]
+            chip_address_end = sys.argv[2][1:]
+            chip_address_start_number = int(sys.argv[1][2:])
+            chip_address_end_number = int(sys.argv[2][2:])
+
+            if (chip_address_start_number > chip_address_end_number):
+                print('chip_address_end_number have to large than chip_address_start_number!')
+                sys.exit()
+
+            print('Set chip address from %s to %s .'%(chip_address_start.upper(),chip_address_end.upper()))
+
+            for address_number in xrange(chip_address_start_number,chip_address_end_number+1):                
+                chip_address = 'a%d'%address_number
+                for input_dir in source_data_dir[chip_address.lower()]:  
+                    run(chip_address,input_dir)
+
+        else:
+            print('Chip address is invalid!')
+            sys.exit()
+
+    
