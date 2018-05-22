@@ -51,7 +51,8 @@ class Decode():
         #define thread
         self.seed_threshold = 500
         self.cluster_threshold = 500
-        self.size_adc_threshold = 200  
+        self.size_adc_threshold = 200 
+
 
         #configure cluster size
         self.cluster_size = 2
@@ -88,7 +89,6 @@ class Decode():
         tmp_seed_adc = 0
         tmp_cluster_adc = 0
         tmp_size = 0
-
         tmp_frame_array=np.reshape(frame_adc, newshape=(48, 16, 2))
         tmp_frame=np.zeros((48,16), dtype='int16')
 
@@ -107,69 +107,43 @@ class Decode():
         channel_seed = tmp_seed_position[1][0]
         #seed end#
 
-                # print(tmp_frame)
-                # print('SEED ADC : ',tmp_seed_adc)
-                # print('SEED POS : ',tmp_seed_position)
-                # print('SEED ROW : ',row_seed)
-                # print('SEED CHA : ',channel_seed)
 
-        #exclude overlap
-        overlap = False
-        for row_angle in [-1,0,1]:
-            for channel_angle in [-1,0,1]:
-                if (row_angle == 0) and (channel_angle == 0):
-                    continue
-                tmp_row = row_seed + 2*row_angle
-                tmp_channel = channel_seed + 2*channel_angle
-                if( (tmp_row>=0) and (tmp_row<48) and (tmp_channel>=0) and (tmp_channel<16) ):
-                    if (tmp_frame[tmp_row,tmp_channel] - tmp_frame[row_seed+row_angle,channel_seed+channel_angle])>200:
-                        overlap = True
-                        break
-        #exclude    end#
+        row_cluster_start = row_seed - self.cluster_size
+        row_cluster_end = row_seed + self.cluster_size
 
-        if not overlap:
+        channel_cluster_start = channel_seed - self.cluster_size
+        channel_cluster_end = channel_seed + self.cluster_size
 
-            row_cluster_start = row_seed - self.cluster_size
-            row_cluster_end = row_seed + self.cluster_size
-
-            channel_cluster_start = channel_seed - self.cluster_size
-            channel_cluster_end = channel_seed + self.cluster_size
-
-            if tmp_seed_adc > self.seed_threshold:
-                self.single_cluster_adc.clear()
-                for row_pos in xrange(row_cluster_start,row_cluster_end+1):
-                    for channel_pos in xrange(channel_cluster_start,channel_cluster_end+1):
-
+        if tmp_seed_adc > self.seed_threshold:
+            self.single_cluster_adc.clear()
+            for row_pos in xrange(row_cluster_start,row_cluster_end+1):
+                for channel_pos in xrange(channel_cluster_start,channel_cluster_end+1):
+                    if( (row_pos>=0) and (row_pos<48) and (channel_pos>=0) and (channel_pos<16)):
                         
-                        if( (row_pos>=0) and (row_pos<48) and (channel_pos>=0) and (channel_pos<16)):
-                        
-                            tmp_cluster_adc += tmp_frame[row_pos,channel_pos]
-
-
-                            #print(int(tmp_frame[row_pos,channel_pos]))
-                            self.single_cluster_adc.push_back(int(tmp_frame[row_pos,channel_pos]))
-                            
-                            #count size#
-                            if tmp_frame[row_pos,channel_pos] > self.size_adc_threshold:
-                                tmp_size += 1
-                            #count end#
-                if (channel_seed >= 2) and (channel_seed <= 13) and (row_seed >= 2) and (row_seed <= 45) :
-                    if tmp_cluster_adc < 6000 :
-                        self.seed_channel[0] = channel_seed
-                        self.seed_row[0] = row_seed
-                        self.seed_adc[0] = tmp_seed_adc
-                        self.total_cluster_adc[0] = tmp_cluster_adc
-                        self.size[0] = tmp_size
-                        self.cluster_tree.Fill()
-                    
+                        tmp_cluster_adc += tmp_frame[row_pos,channel_pos]
+                        self.single_cluster_adc.push_back(int(tmp_frame[row_pos,channel_pos]))
+                                                   
+                        #count size#
+                        if tmp_frame[row_pos,channel_pos] > self.size_adc_threshold:
+                            tmp_size += 1
+                        #count end#
+        if (channel_seed >= 2) and (channel_seed <= 13) and (row_seed >= 2) and (row_seed <= 45) :
+            if tmp_cluster_adc > self.cluster_threshold:
+                self.seed_channel[0] = channel_seed
+                self.seed_row[0] = row_seed
+                self.seed_adc[0] = tmp_seed_adc
+                self.total_cluster_adc[0] = tmp_cluster_adc
+                self.size[0] = tmp_size
+                self.cluster_tree.Fill()
+                
             
     def process_frame(self):
         
         #configure
         data =  open(self.input,'rb')
-        print_number = 10
+        print_number = 1000000
         try_process_number = 19280
-        maxframenumber = 1000000000000
+        maxframenumber = 10000000000
 
         #init value
         seek_position = 0

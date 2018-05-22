@@ -40,11 +40,17 @@ usage() {
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.6"      "[MoReWeb]"
     printf "\n"  
-    printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 A1]"
-    printf "\n\t%-9s  %-40s"  "0.7.1"    "Create A1 python scripts"
-    printf "\n\t%-9s  %-40s"  "0.7.2"    "Create A1 jobs"
-    printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs"
-    printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine A1 root files"
+    printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 A1 for Iron55]"
+    printf "\n\t%-9s  %-40s"  "0.7.1"    "Create python scripts for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.2"    "Create jobs for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine root files for Iron55"
+    printf "\n"  
+    printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 A1 for Sr90]"
+    printf "\n\t%-9s  %-40s"  "0.8.1"    "Create A1 python scripts for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.2"    "Create A1 jobs for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.3"    "Run A1 jobs for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine A1 root files for Sr90"
   }
 
 
@@ -171,28 +177,76 @@ case $option in
 
 
     # --------------------------------------------------------------------------
-    #  0.7 Analyze JadePix1 A1
+    #  0.7 Analyze JadePix1 source data for Iron55
     # --------------------------------------------------------------------------
 
-    0.7) echo "Analyze JadePix1..."
+    0.7) echo "Analyze JadePix1 for Iron55..."
         ;;
 
-    0.7.1) echo "Create A1 python scripts"
-        python ./python/src/script_a1_generator.py
+    0.7.1) echo "Create python scripts for Iron55"
+        chmod u+x ./python/src/script_iron55_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/script_iron55_generator.py -a1 -a6
         ;;
 
-    0.7.2) echo "Create A1 jobs"
-        python ./python/src/job_a1_generator.py
+    0.7.2) echo "Create jobs for Iron55"
+        chmod u+x ./python/src/job_iron55_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/job_iron55_generator.py -a1 -a6
         ;;
     
-    0.7.3) echo "Run A1 jobs"
-        chmod u+x ./python/run/jobs_chip_a1/*
-        chmod u+x run_jobs_chip_a1
-        ./python/run/run_jobs_chip_a1.sh
+    0.7.3) echo "Run A1 jobs for Iron55"
+        chmod u+x ./python/run/jobs_a1_iron55/*
+        for file in ./python/run/jobs_a1_iron55/*
+        do
+        if [ -f "$file" ]
+        then
+            echo "$file is submitted!"
+            #hep_sub -g physics $file
+        fi
+        done        
         ;;
 
-    0.7.4) echo "Combine A1 root files"
+    0.7.4) echo "Combine A1 root files for Iron55"
         ;;
 
+
+    # --------------------------------------------------------------------------
+    #  0.8 Analyze JadePix1 A1 for Sr90
+    # --------------------------------------------------------------------------
+
+    0.8) echo "Analyze JadePix1 for Sr90..."
+        ;;
+
+    0.8.1) echo "Create python scripts for Sr90"
+        chmod u+x ./python/src/script_sr90_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/script_sr90_generator.py -a1 -a6
+        ;;
+
+    0.8.2) echo "Create jobs for Sr90"
+        chmod u+x ./python/src/job_sr90_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/job_sr90_generator.py -a1 -a6
+        ;;
+    
+    0.8.3) echo "Run A1 jobs for Sr90"
+        chmod u+x ./python/run/jobs_a1_sr90/*
+        for file in ./python/run/jobs_a1_sr90/*
+        do
+        if [ -f "$file" ]
+        then
+            echo "$file is submitted!"
+            #hep_sub -g physics $file
+        fi
+        done        
+        ;;
+
+    0.8.4) echo "Combine A1 root files for Sr90"
+        ;;
 
 esac
