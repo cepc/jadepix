@@ -184,11 +184,11 @@ case $option in
         ;;
 
     0.7.1) echo "Create A1 python scripts for Iron55"
-        python ./python/src/script_a1_iron55_generator.py
+        python ./python/src/script_iron55_generator.py -a1
         ;;
 
     0.7.2) echo "Create A1 jobs for Iron55"
-        python ./python/src/job_a1_iron55_generator.py
+        python ./python/src/job_iron55_generator.py -a1
         ;;
     
     0.7.3) echo "Run A1 jobs for Iron55"
