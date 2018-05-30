@@ -210,10 +210,10 @@ case $option in
         ;;
 
     0.7.4) echo "Combine root files for Iron55"
-        chmod u+x ./combine_root_iron55.py
+        chmod u+x ./python/src/combine_root_iron55.py
         # ./*.py -ChipAddress
         # ./*.py -ChipAddressStart -ChipAddressEnd
-        ./combine_root_iron55.py -a1     
+        ./python/src/combine_root_iron55.py -a1     
         ;;
 
 
@@ -251,10 +251,10 @@ case $option in
         ;;
 
     0.8.4) echo "Combine root files for Sr90"
-        chmod u+x ./combine_root_sr90.py
+        chmod u+x ./python/src/combine_root_sr90.py
         # ./*.py -ChipAddress
         # ./*.py -ChipAddressStart -ChipAddressEnd
-        ./combine_root_sr90.py -a1   
+        ./python/src/combine_root_sr90.py -a1   
         ;;
 
 esac
