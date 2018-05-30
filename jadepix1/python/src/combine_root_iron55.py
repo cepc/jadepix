@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 '''
-plot Chip A1 Iron55 clusters hist
+Combine root files for Iron55
 '''
 
 __author__ = "YANG TAO <yangtao@ihep.ac.cn>"
@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %
 # console.setFormatter(logging.Formatter(' %(asctime)s - %(levelname)s- %(message)s'))
 # logging.getLogger('').addHandler(console)
 
-class Sort():
+class Combine():
 
     def __init__(self,input_dir,output_name):
 
@@ -79,7 +79,7 @@ class Sort():
             self.size[0] =tmp_tree.Size
             self.cluster_tree.Fill()
 
-        logging.info('sorted :  '+fname)
+        logging.info('combined :  '+fname)
 
 
     def run(self):
@@ -98,21 +98,50 @@ class Sort():
 
 if __name__ == '__main__':
 
-    # SORT = Sort('../output/chip_a1','../output/CHIPA1_Cluster55_Iron55_thr500.root')
-    # SORT = Sort('../output/chip_a2','../output/CHIPA2_Cluster55_Iron55_thr500.root')
-    # SORT = Sort('../output/chip_a3','../output/CHIPA3_Cluster55_Iron55_thr500.root')
-    # SORT = Sort('../output/chip_a4','../output/CHIPA4_Cluster55_Iron55_thr500.root')
-    # SORT = Sort('../output/chip_a5','../output/CHIPA5_Cluster55_Iron55_thr500.root')
-    # SORT = Sort('../output/chip_a6','../output/CHIPA6_Cluster55_Iron55_thr500.root')
+    if len(sys.argv) < 2:  
+        print('No chip address specified!')  
+        sys.exit() 
 
-    SORT = Sort('../output/chip_a1_sr','../output/CHIPA1_Cluster55_Sr90_thr500.root')
-    # SORT = Sort('../output/chip_a2_sr','../output/CHIPA2_Cluster55_Sr90_thr500.root')
-    # SORT = Sort('../output/chip_a3_sr','../output/CHIPA3_Cluster55_Sr90_thr500.root')
-    # SORT = Sort('../output/chip_a4_sr','../output/CHIPA4_Cluster55_Sr90_thr500.root')
-    # SORT = Sort('../output/chip_a5_sr','../output/CHIPA5_Cluster55_Sr90_thr500.root')
-    # SORT = Sort('../output/chip_a6_sr','../output/CHIPA6_Cluster55_Sr90_thr500.root')
-    
-    SORT.run()
+    if len(sys.argv) == 2:
+        if sys.argv[1].startswith('-a'):
+            chip_address = sys.argv[1][1:]
+            print('Set chip address to %s'%chip_address.upper())
+
+            input_dir = './python/output/output_%s_iron55'%chip_address.lower()
+            output_name = './python/output/CHIP%s_Cluster55_Iron55_thr500.root'%chip_address.upper()
+
+            COMBINE = Combine(input_dir,output_name)
+            COMBINE.run()
+
+        else:
+            print('Chip address is invalid!')
+            sys.exit()   
+            
+    if len(sys.argv) == 3:
+        if (sys.argv[1].startswith('-a') and sys.argv[2].startswith('-a')):
+            chip_address_start = sys.argv[1][1:]
+            chip_address_end = sys.argv[2][1:]
+            chip_address_start_number = int(sys.argv[1][2:])
+            chip_address_end_number = int(sys.argv[2][2:])
+
+            if (chip_address_start_number > chip_address_end_number):
+                print('chip_address_end_number have to large than chip_address_start_number!')
+                sys.exit()
+
+            print('Set chip address from %s to %s .'%(chip_address_start.upper(),chip_address_end.upper()))
+
+            for address_number in xrange(chip_address_start_number,chip_address_end_number+1):                
+                chip_address = 'a%d'%address_number
+
+                input_dir = './python/output/output_%s_iron55'%chip_address.lower()
+                output_name = './python/output/CHIP%s_Cluster55_Iron55_thr500.root'%chip_address.upper()
+
+                COMBINE = Combine(input_dir,output_name)
+                COMBINE.run()
+
+        else:
+            print('Chip address is invalid!')
+            sys.exit()    
 
 
 
