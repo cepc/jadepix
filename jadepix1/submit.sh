@@ -45,12 +45,19 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.7.2"    "Create jobs for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine root files for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.5"    "plot part for iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.5.1"  "plot a1~a3 seed,cluster,size compare results"
+    printf "\n\t%-9s  %-40s"  "0.7.5.2"  "plot a4~a6 seed,cluster,size compare results"
+    printf "\n\t%-9s  %-40s"  "0.7.5.3"  "plot cluster and size 2D results"
+    printf "\n\t%-9s  %-40s"  "0.7.5.4"  "plot pedestal"
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 for Sr90]"
     printf "\n\t%-9s  %-40s"  "0.8.1"    "Create A1 python scripts for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.2"    "Create A1 jobs for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.3"    "Run A1 jobs for Sr90"
-    printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine A1 root files for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine root files for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.5"    "plot part for sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.5.1"  "plot sr90 and fit results"
   }
 
 
@@ -216,6 +223,25 @@ case $option in
         ./python/src/combine_root_iron55.py -a1     
         ;;
 
+    0.7.5) echo "Plot part for Iron55..."
+        ;;
+    0.7.5.1) echo "Plot a1~a3 seed,cluster,size compare results"
+        chmod u+x ./python/plot/plot_chip_a1_a2_a3.py
+        ./python/plot/plot_chip_a1_a2_a3.py
+        ;;
+    0.7.5.2) echo "Plot a4~a6 seed,cluster,size compare results"
+        chmod u+x ./python/plot/plot_chip_a4_a5_a6.py
+        ./python/plot/plot_chip_a4_a5_a6.py
+        ;;
+    0.7.5.3) echo "Plot cluster and size 2D results"
+        chmod u+x ./python/plot/plot_cluste_and_size_2D.py
+        ./python/plot/plot_cluste_and_size_2D.py
+        ;;
+    0.7.5.4) echo "Plot pedestal"
+        chmod u+x ./python/plot/plot_pedestal.py
+        ./python/plot/plot_pedestal.py
+        ;;
+
 
     # --------------------------------------------------------------------------
     #  0.8 Analyze JadePix1 for Sr90
@@ -255,6 +281,13 @@ case $option in
         # ./*.py -ChipAddress
         # ./*.py -ChipAddressStart -ChipAddressEnd
         ./python/src/combine_root_sr90.py -a1   
+        ;;
+
+    0.8.5) echo "Plot part for Sr90..."
+        ;;
+    0.8.5.1) echo "Plot sr90 and fit results"
+        chmod u+x ./python/plot/plot_sr90.py
+        ./python/plot/plot_sr90.py
         ;;
 
 esac
