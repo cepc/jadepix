@@ -25,9 +25,9 @@ logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %
 # logging.getLogger('').addHandler(console)
 
 
-def main(a4_source_fname,a4_noise_fname,\
-         a5_source_fname,a5_noise_fname,\
-         a6_source_fname,a6_noise_fname):
+def main(a4_source_fname,\
+         a5_source_fname,\
+         a6_source_fname):
 
     try:
         #A4
@@ -36,21 +36,11 @@ def main(a4_source_fname,a4_noise_fname,\
         a4_cluster_entries = a4_cluster_tree.GetEntries()
         #a4_cluster_entries = 200000
 
-        a4_noise_file = ROOT.TFile(a4_noise_fname)
-        a4_noise_tree = a4_noise_file.Get('Cluster_Tree')
-        a4_noise_entries = a4_cluster_tree.GetEntries()
-        #a4_noise_entries = 200000
-
         #A5
         a5_source_file = ROOT.TFile(a5_source_fname)
         a5_cluster_tree = a5_source_file.Get('Cluster_Tree')
         a5_cluster_entries = a5_cluster_tree.GetEntries()
         #a5_cluster_entries = 200000
-
-        a5_noise_file = ROOT.TFile(a5_noise_fname)
-        a5_noise_tree = a5_noise_file.Get('Cluster_Tree')
-        a5_noise_entries = a5_cluster_tree.GetEntries()
-        #a5_noise_entries = 200000
 
         #A6
         a6_source_file = ROOT.TFile(a6_source_fname)
@@ -58,147 +48,186 @@ def main(a4_source_fname,a4_noise_fname,\
         a6_cluster_entries = a6_cluster_tree.GetEntries()
         #a6_cluster_entries = 200000
 
-        a6_noise_file = ROOT.TFile(a6_noise_fname)
-        a6_noise_tree = a6_noise_file.Get('Cluster_Tree')
-        a6_noise_entries = a6_cluster_tree.GetEntries()
-        #a6_noise_entries = 200000
 
     except:
         logging.error('input file is invalid!')
         sys.exit()
 
-    canvas = ROOT.TCanvas('cluster_canvas','cluster_siganl',200,10,2400,1200)
-    legend = ROOT.TLegend(0.65,0.6,0.85,0.85)
-    #legend.SetNColumns(2)
-    #legend.SetBorderSize(0)
+    #def cluster hist
+    cluster_canvas = ROOT.TCanvas('cluster_canvas','cluster_signal',200,10,2400,1600)
+    cluster_legend = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    cluster_legend.SetBorderSize(0)
+    cluster_legend.SetTextSize(0.03)
 
-    bin_number = 600
+    cluster_bin_number = 2000
 
-    a4_cluster_hist = ROOT.TH1F('a4 cluster signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
+    a4_cluster_hist = ROOT.TH1F('a4 cluster signal','',cluster_bin_number,0,6000)
     a4_cluster_hist.GetXaxis().SetTitle('ADC')
     a4_cluster_hist.GetXaxis().CenterTitle()
     a4_cluster_hist.GetYaxis().SetTitle('Normalized Counts')
     a4_cluster_hist.GetYaxis().CenterTitle()
     a4_cluster_hist.SetLineColor(6)
-    a4_cluster_hist.SetLineWidth(2)
+    a4_cluster_hist.SetLineWidth(1)
 
-    a4_noise_hist = ROOT.TH1F('a4 noise signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
-    a4_noise_hist.GetXaxis().SetTitle('ADC')
-    a4_noise_hist.GetXaxis().CenterTitle()
-    a4_noise_hist.GetYaxis().SetTitle('Normalized Counts')
-    a4_noise_hist.GetYaxis().CenterTitle()
-    a4_noise_hist.SetLineColor(6)
-    a4_noise_hist.SetLineStyle(9)
-    a4_noise_hist.SetLineWidth(2)
-
-
-    a5_cluster_hist = ROOT.TH1F('a5 cluster signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
+    a5_cluster_hist = ROOT.TH1F('a5 cluster signal','',cluster_bin_number,0,6000)
     a5_cluster_hist.GetXaxis().SetTitle('ADC')
     a5_cluster_hist.GetXaxis().CenterTitle()
     a5_cluster_hist.GetYaxis().SetTitle('Normalized Counts')
     a5_cluster_hist.GetYaxis().CenterTitle()
     a5_cluster_hist.SetLineColor(7)
-    a5_cluster_hist.SetLineWidth(2)
+    a5_cluster_hist.SetLineWidth(1)
 
-    a5_noise_hist = ROOT.TH1F('a5 noise signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
-    a5_noise_hist.GetXaxis().SetTitle('ADC')
-    a5_noise_hist.GetXaxis().CenterTitle()
-    a5_noise_hist.GetYaxis().SetTitle('Normalized Counts')
-    a5_noise_hist.GetYaxis().CenterTitle()
-    a5_noise_hist.SetLineColor(7)
-    a5_noise_hist.SetLineStyle(9)
-    a5_noise_hist.SetLineWidth(2)
-
-
-    a6_cluster_hist = ROOT.TH1F('a6 cluster signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
+    a6_cluster_hist = ROOT.TH1F('a6 cluster signal','',cluster_bin_number,0,6000)
     a6_cluster_hist.GetXaxis().SetTitle('ADC')
     a6_cluster_hist.GetXaxis().CenterTitle()
     a6_cluster_hist.GetYaxis().SetTitle('Normalized Counts')
     a6_cluster_hist.GetYaxis().CenterTitle()
     a6_cluster_hist.SetLineColor(8)
-    a6_cluster_hist.SetLineWidth(2)
+    a6_cluster_hist.SetLineWidth(1)
 
-    a6_noise_hist = ROOT.TH1F('a6 noise signal','{}^{55}Fe  Cluster Signal',bin_number,0,6000)
-    a6_noise_hist.GetXaxis().SetTitle('ADC')
-    a6_noise_hist.GetXaxis().CenterTitle()
-    a6_noise_hist.GetYaxis().SetTitle('Normalized Counts')
-    a6_noise_hist.GetYaxis().CenterTitle()
-    a6_noise_hist.SetLineColor(8)
-    a6_noise_hist.SetLineStyle(9)
-    a6_noise_hist.SetLineWidth(2)
+       
+    #def seed hist
+    seed_canvas = ROOT.TCanvas('seed_canvas','seed_signal',200,10,2400,1600)
+    seed_legend = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    seed_legend.SetBorderSize(0)
+    seed_legend.SetTextSize(0.03)
 
-    a4_peak_adc = 0
-    a5_peak_adc = 0
-    a5_peak_adc = 0
- 
+    seed_bin_number = 1000
 
+    a4_seed_hist = ROOT.TH1F('a4 seed signal','',seed_bin_number,0,6000)
+    a4_seed_hist.GetXaxis().SetTitle('ADC')
+    a4_seed_hist.GetXaxis().CenterTitle()
+    a4_seed_hist.GetYaxis().SetTitle('Normalized Counts')
+    a4_seed_hist.GetYaxis().CenterTitle()
+    a4_seed_hist.SetLineColor(6)
+    a4_seed_hist.SetLineWidth(1)
+
+    a5_seed_hist = ROOT.TH1F('a5 seed signal','',seed_bin_number,0,6000)
+    a5_seed_hist.GetXaxis().SetTitle('ADC')
+    a5_seed_hist.GetXaxis().CenterTitle()
+    a5_seed_hist.GetYaxis().SetTitle('Normalized Counts')
+    a5_seed_hist.GetYaxis().CenterTitle()
+    a5_seed_hist.SetLineColor(7)
+    a5_seed_hist.SetLineWidth(1)
+
+    a6_seed_hist = ROOT.TH1F('a6 seed signal','',seed_bin_number,0,6000)
+    a6_seed_hist.GetXaxis().SetTitle('ADC')
+    a6_seed_hist.GetXaxis().CenterTitle()
+    a6_seed_hist.GetYaxis().SetTitle('Normalized Counts')
+    a6_seed_hist.GetYaxis().CenterTitle()
+    a6_seed_hist.SetLineColor(8)
+    a6_seed_hist.SetLineWidth(1)
+
+
+    #def size hist
+    size_canvas = ROOT.TCanvas('size_canvas','size_signal',200,10,2400,1600)
+    size_legend = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    size_legend.SetBorderSize(0)
+    size_legend.SetTextSize(0.03)
+
+    a4_size_hist = ROOT.TH1F('a4 size distribution','',25,0,25)
+    a4_size_hist.GetXaxis().SetTitle('Size')
+    a4_size_hist.GetXaxis().CenterTitle()
+    a4_size_hist.GetYaxis().SetTitle('Normalized Counts')
+    a4_size_hist.GetYaxis().CenterTitle()
+    a4_size_hist.SetLineColor(6)
+    #a4_size_hist.SetLineStyle(1)
+    a4_size_hist.SetLineWidth(1)
+
+    a5_size_hist = ROOT.TH1F('a5 size distribution','',25,0,25)
+    a5_size_hist.GetXaxis().SetTitle('Size')
+    a5_size_hist.GetXaxis().CenterTitle()
+    a5_size_hist.GetYaxis().SetTitle('Normalized Counts')
+    a5_size_hist.GetYaxis().CenterTitle()
+    a5_size_hist.SetLineColor(7)
+    #a5_size_hist.SetLineStyle(2)
+    a5_size_hist.SetLineWidth(1)
+
+    a6_size_hist = ROOT.TH1F('a6 size distribution','',25,0,25)
+    a6_size_hist.GetXaxis().SetTitle('Size')
+    a6_size_hist.GetXaxis().CenterTitle()
+    a6_size_hist.GetYaxis().SetTitle('Normalized Counts')
+    a6_size_hist.GetYaxis().CenterTitle()
+    a6_size_hist.SetLineColor(8)
+    #a6_size_hist.SetLineStyle(7)
+    a6_size_hist.SetLineWidth(1)
+
+  
     for a4_cluster_entry in xrange(a4_cluster_entries):
         a4_cluster_tree.GetEntry(a4_cluster_entry)
         a4_cluster_hist.Fill(a4_cluster_tree.TotalClusterSignal)
-    a4_peak_adc = a4_cluster_hist.GetMaximumBin()
+        a4_seed_hist.Fill(a4_cluster_tree.SeedSignal)
+        a4_size_hist.Fill(a4_cluster_tree.Size)
     a4_cluster_hist.Scale(1/a4_cluster_hist.Integral())
-
-    for a4_noise_entry in xrange(a4_noise_entries):
-        a4_noise_tree.GetEntry(a4_noise_entry)
-        a4_noise_hist.Fill(a4_noise_tree.ClusterSignal)
-    a4_noise_hist.Scale(1/a4_noise_hist.Integral())
-
+    a4_seed_hist.Scale(1/a4_seed_hist.Integral())
+    a4_size_hist.Scale(1/a4_size_hist.Integral())
+    a4_size_hist.GetYaxis().SetRangeUser(0,1)
 
     for a5_cluster_entry in xrange(a5_cluster_entries):
         a5_cluster_tree.GetEntry(a5_cluster_entry)
         a5_cluster_hist.Fill(a5_cluster_tree.TotalClusterSignal)
-    a5_peak_adc = a5_cluster_hist.GetMaximumBin() 
+        a5_seed_hist.Fill(a5_cluster_tree.SeedSignal)
+        a5_size_hist.Fill(a5_cluster_tree.Size)
     a5_cluster_hist.Scale(1/a5_cluster_hist.Integral())
-
-    for a5_noise_entry in xrange(a5_noise_entries):
-        a5_noise_tree.GetEntry(a5_noise_entry)
-        a5_noise_hist.Fill(a5_noise_tree.ClusterSignal)
-    a5_noise_hist.Scale(1/a5_noise_hist.Integral())
-
+    a5_seed_hist.Scale(1/a5_seed_hist.Integral())
+    a5_size_hist.Scale(1/a5_size_hist.Integral())
+    a5_size_hist.GetYaxis().SetRangeUser(0,1)
 
     for a6_cluster_entry in xrange(a6_cluster_entries):
         a6_cluster_tree.GetEntry(a6_cluster_entry)
         a6_cluster_hist.Fill(a6_cluster_tree.TotalClusterSignal)
-    a6_peak_adc = a6_cluster_hist.GetMaximumBin() 
+        a6_seed_hist.Fill(a6_cluster_tree.SeedSignal)
+        a6_size_hist.Fill(a6_cluster_tree.Size)
     a6_cluster_hist.Scale(1/a6_cluster_hist.Integral())
+    a6_seed_hist.Scale(1/a6_seed_hist.Integral())
+    a6_size_hist.Scale(1/a6_size_hist.Integral())
+    a6_size_hist.GetYaxis().SetRangeUser(0,1)
 
-    for a6_noise_entry in xrange(a6_noise_entries):
-        a6_noise_tree.GetEntry(a6_noise_entry)
-        a6_noise_hist.Fill(a6_noise_tree.ClusterSignal)
-    a6_noise_hist.Scale(1/a6_noise_hist.Integral())
+    cluster_legend.AddEntry(a4_cluster_hist,'A4 : 5 #times 5 cluster signal ')
+    cluster_legend.AddEntry(a5_cluster_hist,'A5 : 5 #times 5 cluster signal ')
+    cluster_legend.AddEntry(a6_cluster_hist,'A6 : 5 #times 5 cluster signal ')
 
-    legend.AddEntry(a4_cluster_hist,'A4 : 5 #times 5 cluster signal ')
-    #legend.AddEntry(a4_noise_hist,'A4 : 5 #times 5 noise signal')
+    seed_legend.AddEntry(a4_seed_hist,'A4 : 5 #times 5 seed signal ')
+    seed_legend.AddEntry(a5_seed_hist,'A5 : 5 #times 5 seed signal ')
+    seed_legend.AddEntry(a6_seed_hist,'A6 : 5 #times 5 seed signal ')
 
-    legend.AddEntry(a5_cluster_hist,'A5 : 5 #times 5 cluster signal ')
-    #legend.AddEntry(a5_noise_hist,'A5 : 5 #times 5 noise signal')
+    size_legend.AddEntry(a4_size_hist,'A4 : 5 #times 5 size distribution ')
+    size_legend.AddEntry(a5_size_hist,'A5 : 5 #times 5 size distribution ')
+    size_legend.AddEntry(a6_size_hist,'A6 : 5 #times 5 size distribution ')
 
-    legend.AddEntry(a6_cluster_hist,'A6 : 5 #times 5 cluster signal ')
-    #legend.AddEntry(a6_noise_hist,'A6 : 5 #times 5 noise signal')
+    if not os.path.exists('./python/fig/'):
+        os.makedirs('./python/fig/')
 
-    if not os.path.exists('../fig/'):
-        os.makedirs('../fig/')
-
-    print('a4 peak adc :',a4_peak_adc)
-    print('a5 peak adc :',a5_peak_adc)
-    print('a6 peak adc :',a6_peak_adc)
-
-
-
-    canvas.cd()
-    # a6_noise_hist.Draw('hist')
-    # a5_noise_hist.Draw('hist same')
-    # a4_noise_hist.Draw('hist same')
+    cluster_canvas.cd()
     a6_cluster_hist.Draw('hist')
     a5_cluster_hist.Draw('hist same')
     a4_cluster_hist.Draw('hist same')
-    legend.Draw()
-    canvas.Update()
-    canvas.SaveAs('../fig/Iron55_Cluster55_456.gif')
+    cluster_legend.Draw()
+    cluster_canvas.Update()
+    cluster_canvas.SaveAs('./python/fig/Iron55_Cluster55_456.pdf')
+
+    seed_canvas.cd()
+    a6_seed_hist.Draw('hist')
+    a5_seed_hist.Draw('hist same')
+    a4_seed_hist.Draw('hist same')
+    seed_legend.Draw()
+    seed_canvas.Update()
+    seed_canvas.SaveAs('./python/fig/Iron55_Seed_456.pdf')
+
+    size_canvas.cd()
+    a6_size_hist.Draw('hist')
+    a5_size_hist.Draw('hist same')
+    a4_size_hist.Draw('hist same')
+    size_legend.Draw()
+    size_canvas.Update()
+    size_canvas.SaveAs('./python/fig/Iron55_Size_456.pdf')
+
 
 
 if __name__ == '__main__':
     
-    main('../output/CHIPA4_Cluster55_Iron55_thr500.root','../output/CHIPA4_noise_55.root','../output/CHIPA5_Cluster55_Iron55_thr500.root','../output/CHIPA5_noise_55.root','../output/CHIPA6_Cluster55_Iron55_thr500.root','../output/CHIPA6_noise_55.root')
+    main('./python/output/CHIPA4_Cluster55_Iron55_thr500.root',\
+         './python/output/CHIPA5_Cluster55_Iron55_thr500.root',\
+         './python/output/CHIPA6_Cluster55_Iron55_thr500.root')
 
 

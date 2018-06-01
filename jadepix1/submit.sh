@@ -40,17 +40,22 @@ usage() {
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.6"      "[MoReWeb]"
     printf "\n"  
-    printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 A1 for Iron55]"
+    printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 for Iron55]"
     printf "\n\t%-9s  %-40s"  "0.7.1"    "Create python scripts for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.2"    "Create jobs for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine root files for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.5"    "plot a1~a3 seed,cluster,size compare results"
+    printf "\n\t%-9s  %-40s"  "0.7.6"    "plot a4~a6 seed,cluster,size compare results"
+    printf "\n\t%-9s  %-40s"  "0.7.7"    "plot cluster and size 2D results"
+    printf "\n\t%-9s  %-40s"  "0.7.8"    "plot pedestal"
     printf "\n"  
-    printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 A1 for Sr90]"
+    printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 for Sr90]"
     printf "\n\t%-9s  %-40s"  "0.8.1"    "Create A1 python scripts for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.2"    "Create A1 jobs for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.3"    "Run A1 jobs for Sr90"
-    printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine A1 root files for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine root files for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.5"    "plot sr90 and fit results"
   }
 
 
@@ -209,12 +214,27 @@ case $option in
         done        
         ;;
 
-    0.7.4) echo "Combine A1 root files for Iron55"
+    0.7.4) echo "Combine root files for Iron55"
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/combine_root_iron55.py -a1     
+        ;;
+    0.7.5) echo "Plot a1~a3 seed,cluster,size compare results"
+        ./python/plot/plot_chip_a1_a2_a3.py
+        ;;
+    0.7.6) echo "Plot a4~a6 seed,cluster,size compare results"
+        ./python/plot/plot_chip_a4_a5_a6.py
+        ;;
+    0.7.7) echo "Plot cluster and size 2D results"
+        ./python/plot/plot_cluste_and_size_2D.py
+        ;;
+    0.7.8) echo "Plot pedestal"
+        ./python/plot/plot_pedestal.py
         ;;
 
 
     # --------------------------------------------------------------------------
-    #  0.8 Analyze JadePix1 A1 for Sr90
+    #  0.8 Analyze JadePix1 for Sr90
     # --------------------------------------------------------------------------
 
     0.8) echo "Analyze JadePix1 for Sr90..."
@@ -246,7 +266,15 @@ case $option in
         done        
         ;;
 
-    0.8.4) echo "Combine A1 root files for Sr90"
+    0.8.4) echo "Combine root files for Sr90"
+        chmod u+x ./python/src/combine_root_sr90.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/combine_root_sr90.py -a1   
+        ;;
+
+    0.8.5) echo "Plot sr90 and fit results"
+        ./python/plot/plot_sr90.py
         ;;
 
 esac
