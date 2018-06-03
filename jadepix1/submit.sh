@@ -48,7 +48,7 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.7.5"    "Create Cluster 2D results to root file"
     printf "\n\t%-9s  %-40s"  "0.7.6"    "plot a1~a3 seed,cluster,size compare results"
     printf "\n\t%-9s  %-40s"  "0.7.7"    "plot a4~a6 seed,cluster,size compare results"
-    printf "\n\t%-9s  %-40s"  "0.7.8"    "plot a1~a6 independent and compare cluster and size 2D results"
+    printf "\n\t%-9s  %-40s"  "0.7.8"    "plot cluster and size 2D results"
     printf "\n\t%-9s  %-40s"  "0.7.9"    "plot pedestal"
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 for Sr90]"

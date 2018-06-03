@@ -60,8 +60,8 @@ def plot(fname):
             size_canvas.cd(2*chip_address-6)
             tmp_size_th2f.Draw('colz') 
 
-        cluster_canvas.SaveAs('./python/fig/Iron55_numberpixs_2D.pdf')
-        size_canvas.SaveAs('./python/fig/Iron55_size_2D.pdf')    
+        cluster_canvas.SaveAs('./python/fig/Iron55_Numberpixs_2D.pdf')
+        size_canvas.SaveAs('./python/fig/Iron55_Size_2D.pdf')    
 
     except:
         logging.error('input file is invalid!')

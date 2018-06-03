@@ -81,7 +81,7 @@ def main(cluster55_fname,min,max,title):
     cluster55_cluster_hist.Draw('hist')
     fit.Draw('same')
     cluster_canvas.Update()
-    cluster_canvas.SaveAs('./python/fig/Sr90_cluster_chip_%s.pdf'%title)
+    cluster_canvas.SaveAs('./python/fig/Sr90_Chip_%s_Fit.pdf'%title)
 
 
 if __name__ == '__main__':
