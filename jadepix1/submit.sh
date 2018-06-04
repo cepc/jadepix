@@ -287,7 +287,7 @@ case $option in
         ./python/plot/plot_sr90_chip_a4_a5_a6.py
         ;;
     0.8.7) echo "Plot sr90 and fit results"
-        ./python/plot/plot_sr90_a1_to_a6_fit.py
+        ./python/plot/plot_sr90_landau_fit.py
         ;;
 
 esac
