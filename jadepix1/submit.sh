@@ -43,7 +43,7 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.7"      "[Analyze JadePix1 for Iron55]"
     printf "\n\t%-9s  %-40s"  "0.7.1"    "Create python scripts for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.2"    "Create jobs for Iron55"
-    printf "\n\t%-9s  %-40s"  "0.7.3"    "Run A1 jobs for Iron55"
+    printf "\n\t%-9s  %-40s"  "0.7.3"    "Run jobs for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.4"    "Combine root files for Iron55"
     printf "\n\t%-9s  %-40s"  "0.7.5"    "Create Cluster 2D results to root file"
     printf "\n\t%-9s  %-40s"  "0.7.6"    "Plot a1~a3 seed,cluster,size compare results"
@@ -52,16 +52,20 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.7.9"    "Get iron55 peak information"
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 for Sr90]"
-    printf "\n\t%-9s  %-40s"  "0.8.1"    "Create A1 python scripts for Sr90"
-    printf "\n\t%-9s  %-40s"  "0.8.2"    "Create A1 jobs for Sr90"
-    printf "\n\t%-9s  %-40s"  "0.8.3"    "Run A1 jobs for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.1"    "Create python scripts for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.2"    "Create jobs for Sr90"
+    printf "\n\t%-9s  %-40s"  "0.8.3"    "Run jobs for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.4"    "Combine root files for Sr90"
     printf "\n\t%-9s  %-40s"  "0.8.5"    "Plot a1~a3 seed,cluster,size compare results"
     printf "\n\t%-9s  %-40s"  "0.8.6"    "Plot a4~a6 seed,cluster,size compare results"
     printf "\n\t%-9s  %-40s"  "0.8.7"    "Plot sr90 fit results"
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.9"      "[Analyze JadePix1 for Pedestal]"
-    printf "\n\t%-9s  %-40s"  "0.9.1"    "Plot pedestal mean in 2D image"    
+    printf "\n\t%-9s  %-40s"  "0.9.1"    "Create python scripts for Pedestal"
+    printf "\n\t%-9s  %-40s"  "0.9.2"    "Create jobs for Pedestal"
+    printf "\n\t%-9s  %-40s"  "0.9.3"    "Run jobs for Pedestal"
+    printf "\n\t%-9s  %-40s"  "0.9.4"    "Combine root files for Pedestal"
+    printf "\n\t%-9s  %-40s"  "0.9.5"    "Plot pedestal mean in 2D image"    
   }
 
 
@@ -223,7 +227,7 @@ case $option in
     0.7.4) echo "Combine root files for Iron55"
         # ./*.py -ChipAddress
         # ./*.py -ChipAddressStart -ChipAddressEnd
-        ./python/src/combine_root_iron55.py -a1     
+        ./python/src/combine_root_iron55.py -a1 -a6     
         ;;
     0.7.5) echo "Create Cluster 2D results to root file"
         ./python/src/cluster_2d_root.py
@@ -279,7 +283,7 @@ case $option in
         chmod u+x ./python/src/combine_root_sr90.py
         # ./*.py -ChipAddress
         # ./*.py -ChipAddressStart -ChipAddressEnd
-        ./python/src/combine_root_sr90.py -a1   
+        ./python/src/combine_root_sr90.py -a1 -a6   
         ;;
 
     0.8.5) echo "Plot a1~a3 seed,cluster,size compare results"
@@ -300,6 +304,43 @@ case $option in
 
     0.9) echo "Analyze JadePix1 for Pedestal..."
         ;;
+
+    0.9.1) echo "Create python scripts for Pedestal"
+        chmod u+x ./python/src/script_pedestal_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/script_pedestal_generator.py -a1 -a6
+        ;;
+
+    0.9.2) echo "Create jobs for Pedestal"
+        chmod u+x ./python/src/job_pedestal_generator.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/job_pedestal_generator.py -a1 -a6
+        ;;
+    
+    0.9.3) echo "Run A1 jobs for Pedestal"
+        chmod u+x ./python/run/jobs_a1_pedestal/*
+        for file in ./python/run/jobs_a1_pedestal/*
+        do
+        if [ -f "$file" ]
+        then
+            echo "$file is submitted!"
+            #hep_sub -g physics $file
+        fi
+        done
+        ;;
+
+    0.9.4) echo "Combine root files for Pedestal"
+        chmod u+x ./python/src/combine_root_pedestal.py
+        # ./*.py -ChipAddress
+        # ./*.py -ChipAddressStart -ChipAddressEnd
+        ./python/src/combine_root_pedestal.py -a1 -a6   
+        ;;
+
+
+
+
 
     0.9.1) echo "Plot pedestal mean in 2D image"
         ./python/plot/plot_pedestal.py
