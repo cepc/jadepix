@@ -238,7 +238,7 @@ def main():
     if not os.path.exists('./python/output/'):
         os.makedirs('./python/output/')
 
-    input = '/publicfs/atlas/atlasnew/higgs/tth/hbb/raw_pixel/20180329WeakFe_CHIPA1_180329094037.df'
+    input = '/publicfs/atlas/atlasnew/higgs/tth/hbb/raw_pixel/20180329/WeakFe_CHIPA1_180329094037.df'
     output = './python/output/Select_Frames.root'
 
     decode = Decode(input,output)
