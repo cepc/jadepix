@@ -338,11 +338,7 @@ case $option in
         ./python/src/combine_root_pedestal.py -a1 -a6   
         ;;
 
-
-
-
-
-    0.9.1) echo "Plot pedestal mean in 2D image"
+    0.9.5) echo "Plot pedestal mean in 2D image"
         ./python/plot/plot_pedestal.py
         ;;  
 

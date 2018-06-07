@@ -12,6 +12,7 @@ __created__ = "[2018-04-10 Apr 12:00]"
 import sys,os,copy
 import ROOT
 ROOT.gStyle.SetOptStat(0)
+# ROOT.gStyle.SetOptFit(111)
 ROOT.gStyle.SetStatX(0.9)
 ROOT.gStyle.SetStatY(0.9)
 ROOT.gStyle.SetStatW(0.08)
@@ -72,6 +73,10 @@ def get_hist(fname,n):
             t.Draw('Chanel_%d_Row_%d>>tmphist(200,-100,100)'%(chanel+1,row+1))
             tmp_hist = ROOT.gROOT.FindObject('tmphist')
             tmp_hist.SetNameTitle('Chanel_%d_Row_%d'%(chanel+1,row+1),'Chanel_%d_Row_%d'%(chanel+1,row+1))
+            tmp_hist.GetXaxis().SetTitle('ADC')
+            tmp_hist.GetXaxis().CenterTitle()
+            tmp_hist.GetYaxis().SetTitle('Counts')
+            tmp_hist.GetYaxis().CenterTitle()
 
             tmp_mean = tmp_hist.GetMean()
             tmp_rms = tmp_hist.GetRMS()
