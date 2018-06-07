@@ -72,6 +72,8 @@ usage() {
 
 if [[ $# -eq 0 ]]; then
     usage
+    chmod u+x ./python/plot/*
+    chmod u+x ./python/src/*
     printf "\nPlease enter your option: "
     read option
 else
