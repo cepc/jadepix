@@ -42,15 +42,15 @@ def get_hist(fname,n):
     f = ROOT.TFile(fname)
     t = f.Get('Pedestal_Tree')
 
-    tmp_mean_th1f = ROOT.TH1F('CHIP_A%d_Pedestal_Mean_Hist'%n,'',80,-0.4,0.4)
-    tmp_rms_th1f = ROOT.TH1F('CHIP_A%d_Pedestal_RMS_Hist'%n,'',50,0,50)
-    tmp_gauss_mean_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Mean_Hist'%n,'',200,-1,1)
-    tmp_gauss_sigma_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Sigma_Hist'%n,'',50,0,50)
+    tmp_mean_th1f = ROOT.TH1F('CHIP_A%d_Pedestal_Mean_Hist'%n,'CHIP A%d'%n,80,-0.4,0.4)
+    tmp_rms_th1f = ROOT.TH1F('CHIP_A%d_Pedestal_RMS_Hist'%n,'CHIP A%d'%n,50,0,50)
+    tmp_gauss_mean_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Mean_Hist'%n,'CHIP A%d'%n,200,-1,1)
+    tmp_gauss_sigma_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Sigma_Hist'%n,'CHIP A%d'%n,50,0,50)
 
-    tmp_mean_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_Mean_2D'%n,'',48,0,48,16,0,16)
-    tmp_rms_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_RMS_2D'%n,'',48,0,48,16,0,16)
-    tmp_gauss_mean_th2f = ROOT.TH2F('CHIP_A%d_Gauss_Mean_2D'%n,'',48,0,48,16,0,16)
-    tmp_gauss_sigma_th2f = ROOT.TH2F('CHIP_A%d_Gauss_Sigma_2D'%n,'',48,0,48,16,0,16)
+    tmp_mean_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_Mean_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
+    tmp_rms_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_RMS_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
+    tmp_gauss_mean_th2f = ROOT.TH2F('CHIP_A%d_Gauss_Mean_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
+    tmp_gauss_sigma_th2f = ROOT.TH2F('CHIP_A%d_Gauss_Sigma_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
 
     tmp_th1f_list = []
     tmp_th2f_list = []
@@ -176,31 +176,31 @@ def save_fig():
         mean_list[ichip].SetMaximum(0.4)
         mean_list[ichip].Draw('COLZ')
         mean_canvas.Update()
-        mean_canvas.SaveAs('./python/fig/Pedestal_mean_chip_a%d.pdf'%(ichip+1))
+        mean_canvas.SaveAs('./python/fig/Pedestal_Mean_Chip_A%d.pdf'%(ichip+1))
 
         rms_canvas.cd()
         rms_canvas.Clear()
         rms_list[ichip].SetMaximum(50.)
         rms_list[ichip].Draw('COLZ')
         rms_canvas.Update()
-        rms_canvas.SaveAs('./python/fig/Pedestal_rms_chip_a%d.pdf'%(ichip+1))
+        rms_canvas.SaveAs('./python/fig/Pedestal_RMS_Chip_A%d.pdf'%(ichip+1))
 
         gauss_mean_canvas.cd()
         gauss_mean_canvas.Clear()
         gauss_mean_list[ichip].SetMaximum(1.)
         gauss_mean_list[ichip].Draw('COLZ')
         gauss_mean_canvas.Update()
-        gauss_mean_canvas.SaveAs('./python/fig/Pedestal_gauss_mean_chip_a%d.pdf'%(ichip+1))
+        gauss_mean_canvas.SaveAs('./python/fig/Pedestal_Gauss_Mean_Chip_A%d.pdf'%(ichip+1))
 
         gauss_sigma_canvas.cd()
         gauss_sigma_canvas.Clear()
         gauss_sigma_list[ichip].SetMaximum(50)
         gauss_sigma_list[ichip].Draw('COLZ')
         gauss_sigma_canvas.Update()
-        gauss_sigma_canvas.SaveAs('./python/fig/Pedestal_gauss_sigma_chip_a%d.pdf'%(ichip+1))
+        gauss_sigma_canvas.SaveAs('./python/fig/Pedestal_Gauss_Sigma_Chip_A%d.pdf'%(ichip+1))
 
 
 if __name__ == '__main__':
-    save_root_file()
-    #save_fig()
+    #save_root_file()
+    save_fig()
 

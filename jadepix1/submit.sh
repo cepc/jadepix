@@ -50,6 +50,7 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.7.7"    "Plot a4~a6 seed,cluster,size compare results"
     printf "\n\t%-9s  %-40s"  "0.7.8"    "Plot cluster and size 2D results"
     printf "\n\t%-9s  %-40s"  "0.7.9"    "Get iron55 peak information"
+    printf "\n\t%-9s  %-40s"  "0.7.10"    "Select frame samples"
     printf "\n"  
     printf "\n\t%-9s  %-40s"  "0.8"      "[Analyze JadePix1 for Sr90]"
     printf "\n\t%-9s  %-40s"  "0.8.1"    "Create python scripts for Sr90"
@@ -244,7 +245,9 @@ case $option in
     0.7.9) echo "Get iron55 peak information"
         ./python/plot/plot_iron55_gauss_peak.py
         ;;
-
+    0.7.10) echo "Select frame samples"
+        ./python/src/select_sample_frame.py
+        ;;
 
     # --------------------------------------------------------------------------
     #  0.8 Analyze JadePix1 for Sr90
