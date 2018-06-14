@@ -153,11 +153,35 @@ def save_fig():
     rms_list = []
     gauss_mean_list = []
     gauss_sigma_list = []
+    gauss_mean_hist_list = []
+    gauss_sigma_hist_list = []
 
     mean_canvas = ROOT.TCanvas('JADEPIX_MEAN','JADEPIX_MEAN',200,10,1000,500)
     rms_canvas = ROOT.TCanvas('JADEPIX_RMS','JADEPIX_RMS',200,10,1000,500)
     gauss_mean_canvas = ROOT.TCanvas('JADEPIX_GAUSS_MEAN','JADEPIX_GAUSS_MEAN',200,10,1000,500)
     gauss_sigma_canvas = ROOT.TCanvas('JADEPIX_GAUSS_SIGMA','JADEPIX_GAUSS_SIGMA',200,10,1000,500)
+
+    gauss_mean_hist_canvas1 = ROOT.TCanvas('GAUSS_MEAN_HIST1','GAUSS_MEAN_HIST',200,10,2400,1600)
+    gauss_sigma_hist_canvas1 = ROOT.TCanvas('GAUSS_SIGMA_HIST1','GAUSS_SIGMA_HIST',200,10,2400,1600)
+
+    gauss_mean_hist_canvas2 = ROOT.TCanvas('GAUSS_MEAN_HIST2','GAUSS_MEAN_HIST',200,10,2400,1600)
+    gauss_sigma_hist_canvas2 = ROOT.TCanvas('GAUSS_SIGMA_HIST2','GAUSS_SIGMA_HIST',200,10,2400,1600)
+
+    gauss_mean_legend1 = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    gauss_mean_legend1.SetBorderSize(0)
+    gauss_mean_legend1.SetTextSize(0.03)
+
+    gauss_mean_legend2 = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    gauss_mean_legend2.SetBorderSize(0)
+    gauss_mean_legend2.SetTextSize(0.03)
+
+    gauss_sigma_legend1 = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    gauss_sigma_legend1.SetBorderSize(0)
+    gauss_sigma_legend1.SetTextSize(0.03)
+
+    gauss_sigma_legend2 = ROOT.TLegend(0.62,0.6,0.82,0.85)
+    gauss_sigma_legend2.SetBorderSize(0)
+    gauss_sigma_legend2.SetTextSize(0.03)
 
 
     for index in xrange(6):
@@ -168,6 +192,11 @@ def save_fig():
         rms_list.append(th2f_list[1])
         gauss_mean_list.append(th2f_list[2])
         gauss_sigma_list.append(th2f_list[3])
+
+        gauss_mean_hist_list.append(th1f_list[2])
+        gauss_sigma_hist_list.append(th1f_list[3])
+
+
 
     for ichip in xrange(6):
 
@@ -198,6 +227,83 @@ def save_fig():
         gauss_sigma_list[ichip].Draw('COLZ')
         gauss_sigma_canvas.Update()
         gauss_sigma_canvas.SaveAs('./python/fig/Pedestal_Gauss_Sigma_Chip_A%d.pdf'%(ichip+1))
+
+    gauss_mean_hist_canvas1.Clear()
+    gauss_sigma_hist_canvas1.Clear()
+    for jchip in xrange(3):
+        gauss_mean_hist_canvas1.cd()
+        gauss_mean_hist_list[jchip].SetTitle('')
+        gauss_mean_hist_list[jchip].GetXaxis().SetRangeUser(0.,1.)
+        gauss_mean_hist_list[jchip].GetXaxis().SetTitle('ADC')
+        gauss_mean_hist_list[jchip].GetXaxis().CenterTitle()
+        gauss_mean_hist_list[jchip].GetYaxis().SetRangeUser(0.,300.)
+        gauss_mean_hist_list[jchip].GetYaxis().SetTitle('Counts')
+        gauss_mean_hist_list[jchip].GetYaxis().CenterTitle()
+        gauss_mean_hist_list[jchip].SetLineColor(jchip+2)
+        gauss_mean_hist_list[jchip].Draw('same')
+
+
+        gauss_sigma_hist_canvas1.cd()
+        gauss_sigma_hist_list[jchip].SetTitle('')
+        gauss_sigma_hist_list[jchip].GetXaxis().SetTitle('ADC')
+        gauss_sigma_hist_list[jchip].GetXaxis().CenterTitle()
+        gauss_sigma_hist_list[jchip].GetYaxis().SetRangeUser(0.,100.)
+        gauss_sigma_hist_list[jchip].GetYaxis().SetTitle('Counts')
+        gauss_sigma_hist_list[jchip].GetYaxis().CenterTitle()
+        gauss_sigma_hist_list[jchip].SetLineColor(jchip+2)
+        gauss_sigma_hist_list[jchip].Draw('same')
+
+        gauss_mean_legend1.AddEntry(gauss_mean_hist_list[jchip],'A%d gauss mean distribution'%(jchip+1))
+        gauss_sigma_legend1.AddEntry(gauss_sigma_hist_list[jchip],'A%d gauss sigma distribution'%(jchip+1))
+
+    gauss_mean_hist_canvas1.cd()
+    gauss_mean_legend1.Draw()
+    gauss_sigma_hist_canvas1.cd()
+    gauss_sigma_legend1.Draw()    
+
+    gauss_mean_hist_canvas1.SaveAs('./python/fig/Pedestal_Gauss_Mean_Distribution_123.pdf')
+    gauss_sigma_hist_canvas1.SaveAs('./python/fig/Pedestal_Gauss_Sigma_Distribution_123.pdf')
+
+
+    gauss_mean_hist_canvas2.Clear()
+    gauss_sigma_hist_canvas2.Clear()
+    for kchip in xrange(3,6):
+        gauss_mean_hist_canvas2.cd()
+        gauss_mean_hist_list[kchip].SetTitle('')
+        gauss_mean_hist_list[kchip].GetXaxis().SetRangeUser(0.,1.)
+        gauss_mean_hist_list[kchip].GetXaxis().SetTitle('ADC')
+        gauss_mean_hist_list[kchip].GetXaxis().CenterTitle()
+        gauss_mean_hist_list[kchip].GetYaxis().SetRangeUser(0.,300.)
+        gauss_mean_hist_list[kchip].GetYaxis().SetTitle('Counts')
+        gauss_mean_hist_list[kchip].GetYaxis().CenterTitle()
+        gauss_mean_hist_list[kchip].SetLineColor(kchip+3)
+        gauss_mean_hist_list[kchip].Draw('same')
+
+
+        gauss_sigma_hist_canvas2.cd()
+        gauss_sigma_hist_list[kchip].SetTitle('')
+        gauss_sigma_hist_list[kchip].GetXaxis().SetTitle('ADC')
+        gauss_sigma_hist_list[kchip].GetXaxis().CenterTitle()
+        gauss_sigma_hist_list[kchip].GetYaxis().SetRangeUser(0.,100.)
+        gauss_sigma_hist_list[kchip].GetYaxis().SetTitle('Counts')
+        gauss_sigma_hist_list[kchip].GetYaxis().CenterTitle()
+        gauss_sigma_hist_list[kchip].SetLineColor(kchip+3)
+        gauss_sigma_hist_list[kchip].Draw('same')
+
+        gauss_mean_legend2.AddEntry(gauss_mean_hist_list[kchip],'A%d gauss mean distribution'%(kchip+1))
+        gauss_sigma_legend2.AddEntry(gauss_sigma_hist_list[kchip],'A%d gauss sigma distribution'%(kchip+1))
+
+    gauss_mean_hist_canvas2.cd()
+    gauss_mean_legend2.Draw()
+    gauss_sigma_hist_canvas2.cd()
+    gauss_sigma_legend2.Draw()    
+        
+    gauss_mean_hist_canvas2.SaveAs('./python/fig/Pedestal_Gauss_Mean_Distribution_456.pdf')
+    gauss_sigma_hist_canvas2.SaveAs('./python/fig/Pedestal_Gauss_Sigma_Distribution_456.pdf')
+
+
+
+
 
 
 if __name__ == '__main__':
