@@ -11,7 +11,7 @@ __created__ = "[2018-04-10 Apr 12:00]"
 
 import sys,os,copy
 import ROOT
-ROOT.gStyle.SetOptStat(0)
+# ROOT.gStyle.SetOptStat(0)
 # ROOT.gStyle.SetOptFit(111)
 ROOT.gStyle.SetStatX(0.9)
 ROOT.gStyle.SetStatY(0.9)
@@ -46,6 +46,12 @@ def get_hist(fname,n):
     tmp_rms_th1f = ROOT.TH1F('CHIP_A%d_Pedestal_RMS_Hist'%n,'CHIP A%d'%n,50,0,50)
     tmp_gauss_mean_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Mean_Hist'%n,'CHIP A%d'%n,200,-1,1)
     tmp_gauss_sigma_th1f = ROOT.TH1F('CHIP_A%d_Gauss_Sigma_Hist'%n,'CHIP A%d'%n,50,0,50)
+
+    tmp_mean_th1f_ex = ROOT.TH1F('CHIP_A%d_Pedestal_Mean_Hist_Without_Edge'%n,'CHIP A%d'%n,80,-0.4,0.4)
+    tmp_rms_th1f_ex = ROOT.TH1F('CHIP_A%d_Pedestal_RMS_Hist_Without_Edge'%n,'CHIP A%d'%n,50,0,50)
+    tmp_gauss_mean_th1f_ex = ROOT.TH1F('CHIP_A%d_Gauss_Mean_Hist_Without_Edge'%n,'CHIP A%d'%n,200,-1,1)
+    tmp_gauss_sigma_th1f_ex = ROOT.TH1F('CHIP_A%d_Gauss_Sigma_Hist_Without_Edge'%n,'CHIP A%d'%n,50,0,50)
+
 
     tmp_mean_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_Mean_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
     tmp_rms_th2f = ROOT.TH2F('CHIP_A%d_Pedestal_RMS_2D'%n,'CHIP A%d'%n,48,0,48,16,0,16)
@@ -87,6 +93,14 @@ def get_hist(fname,n):
             tmp_gauss_mean_th1f.Fill(tmp_gauss_mean)
             tmp_gauss_sigma_th1f.Fill(tmp_gauss_sigma)
 
+            if (chanel >= 2) and (chanel <= 13) and (row >= 2) and (row <= 45) :
+
+                tmp_mean_th1f_ex.Fill(tmp_mean)
+                tmp_rms_th1f_ex.Fill(tmp_rms)
+                tmp_gauss_mean_th1f_ex.Fill(tmp_gauss_mean)
+                tmp_gauss_sigma_th1f_ex.Fill(tmp_gauss_sigma)
+
+
             tmp_mean_th2f.SetBinContent(row+1,chanel+1,tmp_mean)
             tmp_rms_th2f.SetBinContent(row+1,chanel+1,tmp_rms)
             tmp_gauss_mean_th2f.SetBinContent(row+1,chanel+1,tmp_gauss_mean)
@@ -107,7 +121,12 @@ def get_hist(fname,n):
     c_mean_th1f = copy.copy(tmp_mean_th1f)
     c_rms_th1f = copy.copy(tmp_rms_th1f)
     c_gauss_mean_th1f = copy.copy(tmp_gauss_mean_th1f)
-    c_gauss_sigma_th1f = copy.copy(tmp_gauss_sigma_th1f)  
+    c_gauss_sigma_th1f = copy.copy(tmp_gauss_sigma_th1f)
+
+    c_mean_th1f_ex = copy.copy(tmp_mean_th1f_ex)
+    c_rms_th1f_ex = copy.copy(tmp_rms_th1f_ex)
+    c_gauss_mean_th1f_ex = copy.copy(tmp_gauss_mean_th1f_ex)
+    c_gauss_sigma_th1f_ex = copy.copy(tmp_gauss_sigma_th1f_ex)    
 
     c_mean_th2f = copy.copy(tmp_mean_th2f)
     c_rms_th2f = copy.copy(tmp_rms_th2f)
@@ -115,9 +134,11 @@ def get_hist(fname,n):
     c_gauss_sigma_th2f = copy.copy(tmp_gauss_sigma_th2f)
 
     tmp_th1f_list = [c_mean_th1f,c_rms_th1f,c_gauss_mean_th1f,c_gauss_sigma_th1f]
+    tmp_th1f_ex_list = [c_mean_th1f_ex,c_rms_th1f_ex,c_gauss_mean_th1f_ex,c_gauss_sigma_th1f_ex]
+
     tmp_th2f_list = [c_mean_th2f,c_rms_th2f,c_gauss_mean_th2f,c_gauss_sigma_th2f]
 
-    return tmp_th1f_list,tmp_th2f_list,tmp_hist_list
+    return tmp_th1f_list,tmp_th2f_list,tmp_hist_list,tmp_th1f_ex_list
 
 
 
@@ -126,12 +147,16 @@ def save_root_file():
 
     for ichip in xrange(6):
 
-        th1f_list,th2f_list,hist_list= get_hist('./python/output/CHIP_A%d_Pedestal.root'%(ichip+1),ichip+1)
+        th1f_list,th2f_list,hist_list,th1f_ex_list= get_hist('./python/output/CHIP_A%d_Pedestal.root'%(ichip+1),ichip+1)
         
         output.cd()
 
         for th1f in th1f_list:
             output.Append(th1f)
+
+        for th1f_ex in th1f_ex_list:
+            output.Append(th1f_ex)
+
         for th2f in th2f_list:
             output.Append(th2f)
 
@@ -185,7 +210,7 @@ def save_fig():
 
 
     for index in xrange(6):
-        th1f_list,th2f_list,hist_list = get_hist('./python/output/CHIP_A%d_Pedestal.root'%(index+1),index+1)
+        th1f_list,th2f_list,hist_list,th1f_ex_list = get_hist('./python/output/CHIP_A%d_Pedestal.root'%(index+1),index+1)
         print('*******draw ',index+1)
 
         mean_list.append(th2f_list[0])
@@ -307,6 +332,6 @@ def save_fig():
 
 
 if __name__ == '__main__':
-    #save_root_file()
-    save_fig()
+    save_root_file()
+    # save_fig()
 
