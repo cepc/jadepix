@@ -29,7 +29,7 @@ logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %
 def get_peak(hist,xmin,xmax):
 
     gauss_fit = ROOT.TF1('gauss_fit','gaus',xmin,xmax)
-    hist.Fit('gauss_fit','R')
+    hist.Fit('gauss_fit','R+')
     mean = gauss_fit.GetParameter(1)
     mean_error = gauss_fit.GetParError(1)
 
@@ -101,33 +101,53 @@ def main(root_data):
         print('***** Read A%d Data *****'%chip_address)
 
 
-    cluster_peak_list = []
-    cluster_peak_list.append(get_peak(cluster_hist_list[0],3400,3600))
-    cluster_peak_list.append(get_peak(cluster_hist_list[1],3000,3200))
-    cluster_peak_list.append(get_peak(cluster_hist_list[2],2200,2400))
-    cluster_peak_list.append(get_peak(cluster_hist_list[3],3450,3650))
-    cluster_peak_list.append(get_peak(cluster_hist_list[4],2700,2900))
-    cluster_peak_list.append(get_peak(cluster_hist_list[5],1700,1900))
+    cluster_peak_list_1 = []
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[0],3400,3600))
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[1],3000,3200))
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[2],2200,2400))
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[3],3450,3650))
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[4],2700,2900))
+    cluster_peak_list_1.append(get_peak(cluster_hist_list[5],1700,1900))
 
-    seed_peak_list = []
-    seed_peak_list.append(get_peak(seed_hist_list[0],3400,3500))
-    seed_peak_list.append(get_peak(seed_hist_list[1],3000,3100))
-    seed_peak_list.append(get_peak(seed_hist_list[2],2170,2230))
-    seed_peak_list.append(get_peak(seed_hist_list[3],3470,3570))
-    seed_peak_list.append(get_peak(seed_hist_list[4],2730,2800))
-    seed_peak_list.append(get_peak(seed_hist_list[5],1670,1720))
+    cluster_peak_list_2 = []
+    cluster_peak_list_2.append(get_peak(cluster_hist_list[0],3800,4100))
+    cluster_peak_list_2.append(get_peak(cluster_hist_list[1],3350,3700))
+    cluster_peak_list_2.append(0.)
+    cluster_peak_list_2.append(get_peak(cluster_hist_list[3],3800,4200))
+    cluster_peak_list_2.append(get_peak(cluster_hist_list[4],3020,3400))
+    cluster_peak_list_2.append(0.)    
+
+    seed_peak_list_1 = []
+    seed_peak_list_1.append(get_peak(seed_hist_list[0],3400,3500))
+    seed_peak_list_1.append(get_peak(seed_hist_list[1],3000,3100))
+    seed_peak_list_1.append(get_peak(seed_hist_list[2],2170,2230))
+    seed_peak_list_1.append(get_peak(seed_hist_list[3],3470,3570))
+    seed_peak_list_1.append(get_peak(seed_hist_list[4],2730,2800))
+    seed_peak_list_1.append(get_peak(seed_hist_list[5],1670,1720))
+
+    seed_peak_list_2 = []
+    seed_peak_list_2.append(get_peak(seed_hist_list[0],3700,3900))
+    seed_peak_list_2.append(get_peak(seed_hist_list[1],3300,3450))
+    seed_peak_list_2.append(get_peak(seed_hist_list[2],2370,2500))
+    seed_peak_list_2.append(get_peak(seed_hist_list[3],3800,4000))
+    seed_peak_list_2.append(get_peak(seed_hist_list[4],2950,3150))
+    seed_peak_list_2.append(get_peak(seed_hist_list[5],1840,1920))
 
 
     peak_table = PrettyTable()
     peak_table.add_column('Chip address',chip_address_list)
-    peak_table.add_column('Cluster Peak (Ka)',cluster_peak_list)
-    peak_table.add_column('Seed Peak (Ka)',seed_peak_list)
+    peak_table.add_column('Cluster Peak (Ka)',cluster_peak_list_1)
+    peak_table.add_column('Cluster Peak (Kb)',cluster_peak_list_2)
+    peak_table.add_column('Seed Peak (Ka)',seed_peak_list_1)
+    peak_table.add_column('Seed Peak (Kb)',seed_peak_list_2)
     print('\n\n********************************\n********************************')
     print(peak_table)
 
     dataframe = pandas.DataFrame({'Chip address' : chip_address_list,
-                                  'Cluster Peak (Ka)' : cluster_peak_list,
-                                  'Seed Peak (Ka)' : seed_peak_list})
+                                  'Cluster Peak (Ka)' : cluster_peak_list_1,
+                                  'Cluster Peak (Kb)' : cluster_peak_list_2,
+                                  'Seed Peak (Ka)' : seed_peak_list_1,
+                                  'Seed Peak (Kb)' : seed_peak_list_2})
     dataframe.to_csv("./python/output/Iron55_Gauss_Peak.csv",index=False,sep=',',encoding='utf_8_sig')
 
     for append_address in xrange(0,chip_number):

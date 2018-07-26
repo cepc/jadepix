@@ -67,6 +67,9 @@ usage() {
     printf "\n\t%-9s  %-40s"  "0.9.3"    "Run jobs for Pedestal"
     printf "\n\t%-9s  %-40s"  "0.9.4"    "Combine root files for Pedestal"
     printf "\n\t%-9s  %-40s"  "0.9.5"    "Plot pedestal mean in 2D image"    
+    printf "\n"  
+    printf "\n\t%-9s  %-40s"  "0.10"      "[Analyze JadePix1 for Laser]"
+    printf "\n\t%-9s  %-40s"  "0.10.1"    "Run test script for Jadepix laser"
   }
 
 
@@ -346,5 +349,17 @@ case $option in
     0.9.5) echo "Plot pedestal mean in 2D image"
         ./python/plot/plot_pedestal.py
         ;;  
+
+    # --------------------------------------------------------------------------
+    #  0.10 Analyze JadePix1 for Laser
+    # --------------------------------------------------------------------------
+
+    0.10) echo "Analyze JadePix1 for Laser..."
+        ;;
+
+    0.10.1) echo "Run test script for Jadepix1 laser"
+        chmod u+x ./python/src/run_test_laser.py
+        ./python/src/run_test_laser.py
+        ;;
 
 esac
